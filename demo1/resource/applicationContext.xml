@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+   http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <!--声明切面（日志对象）-->
+    <bean id="loggerAspect" class="com.gmr.aspect.LoggerAspect">
+    </bean>
+
+    <bean id="eatService" class="com.gmr.service.EatService">
+    </bean>
+    
+    <aop:config>
+        <!--配置com.gmr.service.EatService这个类下的所有方法都是切点-->
+        <aop:pointcut id="loggerCutpoint" expression="execution(* com.gmr.service.EatService.*(..)))"/>
+        <!--配置切面-->
+        <aop:aspect id="logAspect" ref="loggerAspect">
+            <aop:around pointcut-ref="loggerCutpoint" method="log"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
